@@ -18,15 +18,14 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class GoogleAPI {
 	/** Application name. */
-	private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
+	private static final String APPLICATION_NAME = "Google Sheets API Java Hunqz";
 
 	/** Directory to store user credentials for this application. */
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"),
-			".credentials/sheets.googleapis.com-java-quickstart");
+			".credentials/sheets.googleapis.com-java-hunqz");
 
 	/** Global instance of the {@link FileDataStoreFactory}. */
 	private static FileDataStoreFactory DATA_STORE_FACTORY;
@@ -38,12 +37,12 @@ public class GoogleAPI {
 	private static HttpTransport HTTP_TRANSPORT;
 
 	/**
-	 * Global instance of the scopes required by this quickstart.
+	 * Global instance of the scopes required by this hunqz.
 	 *
 	 * If modifying these scopes, delete your previously saved credentials at
-	 * ~/.credentials/sheets.googleapis.com-java-quickstart
+	 * ~/.credentials/sheets.googleapis.com-java-hunqz
 	 */
-	private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
+	private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS);
 
 	static {
 		try {
@@ -61,7 +60,7 @@ public class GoogleAPI {
 	 * @return an authorized Credential object.
 	 * @throws IOException
 	 */
-	public static Credential authorize() throws IOException {
+	private static Credential authorize() throws IOException {
 		// Load client secrets.
 		final InputStream in = GoogleAPI.class.getResourceAsStream("/client_secret.json");
 		final GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
@@ -86,26 +85,4 @@ public class GoogleAPI {
 		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
 				.build();
 	}
-
-	public static void main(String[] args) throws IOException {
-		// Build a new authorized API client service.
-		final Sheets service = getSheetsService();
-
-		// Prints the names and majors of students in a sample spreadsheet:
-		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		final String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
-		final String range = "Class Data!A2:E";
-		final ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
-		final List<List<Object>> values = response.getValues();
-		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
-		} else {
-			System.out.println("Name, Major");
-			for (final List row : values) {
-				// Print columns A and E, which correspond to indices 0 and 4.
-				System.out.printf("%s, %s\n", row.get(0), row.get(4));
-			}
-		}
-	}
-
 }
