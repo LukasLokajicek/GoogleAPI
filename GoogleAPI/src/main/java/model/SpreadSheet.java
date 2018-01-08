@@ -22,7 +22,7 @@ public class SpreadSheet {
 		Sheets ser = null;
 		try {
 			ser = GoogleAPI.getSheetsService();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.out.println("Cannot create SpreadSheet");
 			e.printStackTrace();
 		}
@@ -40,30 +40,29 @@ public class SpreadSheet {
 			try {
 				response = service.spreadsheets().values().get(spreadsheetId, range).execute();
 				return response.getValues();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				System.out.println("Cannot read data at given range");
 				e.printStackTrace();
 			}
 
 		return new ArrayList<>();
 	}
-	
-	
+
 	public String updateValue(String value, String range) {
-		List<List<Object>> values = Arrays.asList(Arrays.asList(value));
-		
-		
-		ValueRange body = new ValueRange().setValues(values);
-		
+		final List<List<Object>> values = Arrays.asList(Arrays.asList(value));
+
+		final ValueRange body = new ValueRange().setValues(values);
+
 		try {
-			UpdateValuesResponse response = service.spreadsheets().values().update(spreadsheetId, range, body).setValueInputOption("USER_ENTERED").execute();
+			final UpdateValuesResponse response = service.spreadsheets().values().update(spreadsheetId, range, body)
+					.setValueInputOption("RAW").execute();
 			return response.getUpdatedCells().toString();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return "Nothing";
-	
+
 	}
 }
