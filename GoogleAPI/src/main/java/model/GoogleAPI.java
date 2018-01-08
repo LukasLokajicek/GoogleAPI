@@ -48,9 +48,9 @@ public class GoogleAPI {
 		try {
 			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 			DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
-		} catch (final Throwable t) {
-			t.printStackTrace();
-			System.exit(1);
+		} catch (final Exception e) {
+			System.out.println("Cannot load Google API Sheet");
+			e.printStackTrace();
 		}
 	}
 
